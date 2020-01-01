@@ -7,7 +7,7 @@ export function getNxAffectedApps({ base, head, workspace }: Props): string[] {
 	}).toString()
 
 	if (!result.includes('Affected apps:')) {
-		throw Error('NX Command Failed: ' + result)
+		throw Error(`NX Command Failed: ${result}`)
 	}
 
 	const apps = result
