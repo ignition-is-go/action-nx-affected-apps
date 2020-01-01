@@ -1,0 +1,6 @@
+{
+	"yaml.schemaStore.enable": true,
+	"yaml.schemas": {
+		"http://json.schemastore.org/github-action": "action.yml"
+	}
+}
