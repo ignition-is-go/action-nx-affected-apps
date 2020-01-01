@@ -46,8 +46,8 @@ jobs:
     - id: check_nx_apps
       uses: ignition-is-go/nx-affected-apps-action
 	    with:
-	  	head: 'origin/master'
-	  	base: github.sha
+	  	  head: 'origin/master'
+	  	  base: github.sha
   	- name: 'do something to only myApp'
 	    if: contains(steps.check_nx_apps.affected_apps, 'myApp')
 	    run: ...
