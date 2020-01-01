@@ -51,7 +51,7 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = __webpack_require__(129);
 function getNxAffectedApps({ base, head, workspace }) {
-    const result = child_process_1.execSync(`npx nx affected:apps --base=${base} --head=${head}`, {
+    const result = child_process_1.execSync(`nx affected:apps --base=${base} --head=${head}`, {
         cwd: workspace
     }).toString();
     if (!result.includes('Affected apps:')) {
