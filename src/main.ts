@@ -19,6 +19,7 @@ async function run(): Promise<void> {
 
 		core.setOutput('affected_apps', appsString)
 		core.exportVariable('NX_AFFECTED_APPS', appsString)
+		core.info(`Found these affected apps: \n ${appsString}`)
 
 	} catch (error) {
 		core.setFailed(error.message)
