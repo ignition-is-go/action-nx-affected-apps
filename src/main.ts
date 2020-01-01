@@ -1,19 +1,29 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { wait } from './wait'
+import { getNxAffectedApps } from './getNxAffectedApps'
+
+const {
+	GITHUB_WORKSPACE = '.',
+} = process.env
 
 async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+	try {
+		const base = core.getInput('base')
+		const head = core.getInput('head')
+		core.debug(`Getting diff from ${base} to ${head}...`)
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+		const apps = getNxAffectedApps({
+			base, head, workspace: GITHUB_WORKSPACE
+		})
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
-  }
+		const appsString = JSON.stringify(apps)
+
+		core.setOutput('affected_apps', appsString)
+		core.exportVariable('NX_AFFECTED_APPS', appsString)
+
+	} catch (error) {
+		core.setFailed(error.message)
+	}
 }
 
 run()
