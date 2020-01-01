@@ -44,7 +44,7 @@ jobs:
       with:
         node-version: 11
     - id: check_nx_apps
-	  uses: ignition-is-go/nx-affected-apps-action
+      uses: ignition-is-go/nx-affected-apps-action
       with:
         head: 'origin/master'
         base: github.sha
