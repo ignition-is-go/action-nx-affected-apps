@@ -2,7 +2,7 @@
   <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
 </p>
 
-# nx-affected-apps-action
+# action-nx-affected-apps
 A Github Action to determine the affected apps within an Nx Monorepo.
 
 > **NOTE:** this action won't work if your repo isn't an [Nx Workspace](https://nx.dev/web)
@@ -44,7 +44,7 @@ jobs:
       with:
         node-version: 11
     - id: check_nx_apps
-      uses: ignition-is-go/nx-affected-apps-action
+      uses: ignition-is-go/action-nx-affected-apps
       with:
         head: 'origin/master'
         base: github.sha
