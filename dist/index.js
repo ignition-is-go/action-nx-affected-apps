@@ -115,7 +115,8 @@ function run() {
         try {
             const base = core.getInput('base');
             const head = core.getInput('head');
-            core.debug(`Getting diff from ${base} to ${head}...`);
+            core.info(`Getting diff from ${base} to ${head}...`);
+            core.info(`using dir: ${GITHUB_WORKSPACE}`);
             const apps = getNxAffectedApps_1.getNxAffectedApps({
                 base,
                 head,
