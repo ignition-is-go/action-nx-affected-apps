@@ -1,15 +1,13 @@
 import { execSync } from 'child_process'
 
 export function getNxAffectedApps({ base, head, workspace }: Props): string[] {
-	const result = execSync(
-		`nx affected:apps --base=${base} --head=${head}`,
-		{
-			cwd: workspace
-		}
-	).toString()
+	execSync('npm i -g @nrwl/cli')
+	const result = execSync(`nx affected:apps --base=${base} --head=${head}`, {
+		cwd: workspace
+	}).toString()
 
 	if (!result.includes('Affected apps:')) {
-		throw Error('NX Command Failed')
+		throw Error('NX Command Failed: ' + result)
 	}
 
 	const apps = result
