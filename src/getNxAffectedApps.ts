@@ -2,7 +2,7 @@ import {execSync} from 'child_process'
 
 export function getNxAffectedApps({base, head, workspace}: Props): string[] {
   const result = execSync(
-    `./node_modules/.bin/nx affected:apps ${base ? `--base=${base}` : ''} ${
+    `nx affected:apps ${base ? `--base=${base}` : ''} ${
       head ? `--head=${head}` : ''
     }`,
     {cwd: workspace}
