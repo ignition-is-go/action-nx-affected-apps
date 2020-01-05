@@ -51,9 +51,7 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = __webpack_require__(129);
 function getNxAffectedApps({ base, head, workspace }) {
-    const result = child_process_1.execSync(`nx affected:apps --base=${base} --head=${head}`, {
-        cwd: workspace
-    }).toString();
+    const result = child_process_1.execSync(`./node_modules/.bin/nx affected:apps ${(base ? `--base=${base}` : '')} ${(head ? `--head=${head}` : '')}`, { cwd: workspace }).toString();
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`);
     }
@@ -108,13 +106,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const getNxAffectedApps_1 = __webpack_require__(20);
-const { GITHUB_WORKSPACE = '.', } = process.env;
+const { GITHUB_WORKSPACE = '.' } = process.env;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const base = `remotes/origin/${core.getInput('base')}`;
-            const head = `remotes/origin/${core.getInput('head')}`;
-            core.info(`Getting diff from ${base} to ${head}...`);
+            const base = core.getInput('base');
+            const head = core.getInput('head');
+            core.info(`Getting diff from ${base} to ${head || 'HEAD'}...`);
             core.info(`using dir: ${GITHUB_WORKSPACE}`);
             const apps = getNxAffectedApps_1.getNxAffectedApps({
                 base,
