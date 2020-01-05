@@ -51,7 +51,7 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = __webpack_require__(129);
 function getNxAffectedApps({ base, head, workspace }) {
-    const result = child_process_1.execSync(`./node_modules/.bin/nx affected:apps ${(base ? `--base=${base}` : '')} ${(head ? `--head=${head}` : '')}`, { cwd: workspace }).toString();
+    const result = child_process_1.execSync(`nx affected:apps ${base ? `--base=${base}` : ''} ${head ? `--head=${head}` : ''}`, { cwd: workspace }).toString();
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`);
     }
