@@ -51,7 +51,22 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = __webpack_require__(129);
 function getNxAffectedApps({ base, head, workspace }) {
-    const result = child_process_1.execSync(`nx affected:apps ${base ? `--base=${base}` : ''} ${head ? `--head=${head}` : ''}`, { cwd: workspace }).toString();
+    const args = `${base ? `--base=${base}` : ''} ${head ? `--head=${head}` : ''}`;
+    let result;
+    try {
+        result = child_process_1.execSync(`nx affected:apps ${args}`, { cwd: workspace }).toString();
+    }
+    catch (_a) {
+        try {
+            result = child_process_1.execSync(`./node_modules/.bin/nx affected:apps ${args}`, { cwd: workspace }).toString();
+        }
+        catch (_b) {
+            result = child_process_1.execSync(`npm run nx -- affected:apps ${args}`, { cwd: workspace }).toString();
+        }
+    }
+    if (!result) {
+        throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
+    }
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`);
     }
