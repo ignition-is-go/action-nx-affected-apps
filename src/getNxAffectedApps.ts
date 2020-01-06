@@ -1,4 +1,5 @@
 import {execSync} from 'child_process'
+import * as core from '@actions/core'
 
 export function getNxAffectedApps({base, head, workspace}: Props): string[] {
     const args = `${base ? `--base=${base}` : ''} ${
@@ -6,16 +7,22 @@ export function getNxAffectedApps({base, head, workspace}: Props): string[] {
     }`
     let result
     try {
-        result = execSync(`nx affected:apps ${args}`, {
+        const cmd = `nx affected:apps ${args}`
+        core.info(`Attempting: ${cmd}`)
+        result = execSync(cmd, {
             cwd: workspace
         }).toString()
     } catch {
         try {
-            result = execSync(`./node_modules/.bin/nx affected:apps ${args}`, {
+            const cmd = `./node_modules/.bin/nx affected:apps ${args}`
+            core.info(`Attempting: ${cmd}`)
+            result = execSync(cmd, {
                 cwd: workspace
             }).toString()
         } catch {
-            result = execSync(`npm run nx -- affected:apps ${args}`, {
+            const cmd = `npm run nx -- affected:apps ${args}`
+            core.info(`Attempting: ${cmd}`)
+            result = execSync(cmd, {
                 cwd: workspace
             }).toString()
         }

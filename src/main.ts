@@ -1,10 +1,9 @@
 import * as core from '@actions/core'
 import {getNxAffectedApps} from './getNxAffectedApps'
 
-const {GITHUB_WORKSPACE = '.'} = process.env
-
-async function run(): Promise<void> {
+export async function run(workspace: string = '.'): Promise<void> {
     try {
+        const {GITHUB_WORKSPACE = workspace} = process.env
         const base = core.getInput('base')
         const head = core.getInput('head')
         core.info(`Getting diff from ${base} to ${head || 'HEAD'}...`)
