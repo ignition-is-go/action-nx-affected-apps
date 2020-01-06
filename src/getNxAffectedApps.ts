@@ -7,21 +7,23 @@ export function getNxAffectedApps({base, head, workspace}: Props): string[] {
     }`
     let result
     try {
-        const cmd = `nx affected:apps ${args}`
-        core.info(`Attempting: ${cmd}`)
+        const cmd = `npm run nx -- affected:apps ${args}`
+        core.info(`Attempting npm script: ${cmd}`)
         result = execSync(cmd, {
             cwd: workspace
         }).toString()
-    } catch {
+    } catch (e) {
+        core.info(`first attempt failed: ${e.message}`)
         try {
             const cmd = `./node_modules/.bin/nx affected:apps ${args}`
-            core.info(`Attempting: ${cmd}`)
+            core.info(`Attempting from node modules: ${cmd}`)
             result = execSync(cmd, {
                 cwd: workspace
             }).toString()
-        } catch {
-            const cmd = `npm run nx -- affected:apps ${args}`
-            core.info(`Attempting: ${cmd}`)
+        } catch (e2) {
+            core.info(`second attempt failed: ${e2.message}`)
+            const cmd = `nx affected:apps ${args}`
+            core.info(`Attempting global npm bin: ${cmd}`)
             result = execSync(cmd, {
                 cwd: workspace
             }).toString()
