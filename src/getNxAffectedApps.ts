@@ -36,6 +36,8 @@ export function getNxAffectedApps({base, head, workspace}: Props): string[] {
         )
     }
 
+    core.info(`Affected Apps output: \n${result}`)
+
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`)
     }
