@@ -89,6 +89,7 @@ function getNxAffectedApps({ base, head, workspace }) {
     if (!result) {
         throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
     }
+    core.info(`Affected Apps output: \n${result}`);
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`);
     }
