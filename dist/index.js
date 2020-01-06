@@ -62,23 +62,25 @@ function getNxAffectedApps({ base, head, workspace }) {
     const args = `${base ? `--base=${base}` : ''} ${head ? `--head=${head}` : ''}`;
     let result;
     try {
-        const cmd = `nx affected:apps ${args}`;
-        core.info(`Attempting: ${cmd}`);
+        const cmd = `npm run nx -- affected:apps ${args}`;
+        core.info(`Attempting npm script: ${cmd}`);
         result = child_process_1.execSync(cmd, {
             cwd: workspace
         }).toString();
     }
-    catch (_a) {
+    catch (e) {
+        core.info(`first attempt failed: ${e.message}`);
         try {
             const cmd = `./node_modules/.bin/nx affected:apps ${args}`;
-            core.info(`Attempting: ${cmd}`);
+            core.info(`Attempting from node modules: ${cmd}`);
             result = child_process_1.execSync(cmd, {
                 cwd: workspace
             }).toString();
         }
-        catch (_b) {
-            const cmd = `npm run nx -- affected:apps ${args}`;
-            core.info(`Attempting: ${cmd}`);
+        catch (e2) {
+            core.info(`second attempt failed: ${e2.message}`);
+            const cmd = `nx affected:apps ${args}`;
+            core.info(`Attempting global npm bin: ${cmd}`);
             result = child_process_1.execSync(cmd, {
                 cwd: workspace
             }).toString();
