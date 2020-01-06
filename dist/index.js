@@ -63,33 +63,38 @@ function getNxAffectedApps({ base, head, workspace }) {
     let result;
     try {
         const cmd = `npm run nx -- affected:apps ${args}`;
-        core.info(`Attempting npm script: ${cmd}`);
+        core.debug(`Attempting npm script: ${cmd}`);
         result = child_process_1.execSync(cmd, {
             cwd: workspace
         }).toString();
     }
     catch (e) {
-        core.info(`first attempt failed: ${e.message}`);
+        core.debug(`first attempt failed: ${e.message}`);
         try {
             const cmd = `./node_modules/.bin/nx affected:apps ${args}`;
-            core.info(`Attempting from node modules: ${cmd}`);
+            core.debug(`Attempting from node modules: ${cmd}`);
             result = child_process_1.execSync(cmd, {
                 cwd: workspace
             }).toString();
         }
         catch (e2) {
-            core.info(`second attempt failed: ${e2.message}`);
-            const cmd = `nx affected:apps ${args}`;
-            core.info(`Attempting global npm bin: ${cmd}`);
-            result = child_process_1.execSync(cmd, {
-                cwd: workspace
-            }).toString();
+            try {
+                core.debug(`second attempt failed: ${e2.message}`);
+                const cmd = `nx affected:apps ${args}`;
+                core.debug(`Attempting global npm bin: ${cmd}`);
+                result = child_process_1.execSync(cmd, {
+                    cwd: workspace
+                }).toString();
+            }
+            catch (e3) {
+                core.debug(`third attempt failed: ${e3.message}`);
+                throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
+            }
         }
     }
     if (!result) {
-        throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
+        return [];
     }
-    core.info(`Affected Apps output: \n${result}`);
     if (!result.includes('Affected apps:')) {
         throw Error(`NX Command Failed: ${result}`);
     }
