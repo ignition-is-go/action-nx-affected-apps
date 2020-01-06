@@ -93,6 +93,7 @@ function getNxAffectedApps({ base, head, workspace }) {
         }
     }
     if (!result) {
+        core.info('Looks like no changes were found...');
         return [];
     }
     if (!result.includes('Affected apps:')) {
