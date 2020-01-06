@@ -48,20 +48,40 @@ module.exports =
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = __webpack_require__(129);
+const core = __importStar(__webpack_require__(470));
 function getNxAffectedApps({ base, head, workspace }) {
     const args = `${base ? `--base=${base}` : ''} ${head ? `--head=${head}` : ''}`;
     let result;
     try {
-        result = child_process_1.execSync(`nx affected:apps ${args}`, { cwd: workspace }).toString();
+        const cmd = `nx affected:apps ${args}`;
+        core.info(`Attempting: ${cmd}`);
+        result = child_process_1.execSync(cmd, {
+            cwd: workspace
+        }).toString();
     }
     catch (_a) {
         try {
-            result = child_process_1.execSync(`./node_modules/.bin/nx affected:apps ${args}`, { cwd: workspace }).toString();
+            const cmd = `./node_modules/.bin/nx affected:apps ${args}`;
+            core.info(`Attempting: ${cmd}`);
+            result = child_process_1.execSync(cmd, {
+                cwd: workspace
+            }).toString();
         }
         catch (_b) {
-            result = child_process_1.execSync(`npm run nx -- affected:apps ${args}`, { cwd: workspace }).toString();
+            const cmd = `npm run nx -- affected:apps ${args}`;
+            core.info(`Attempting: ${cmd}`);
+            result = child_process_1.execSync(cmd, {
+                cwd: workspace
+            }).toString();
         }
     }
     if (!result) {
@@ -121,10 +141,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const getNxAffectedApps_1 = __webpack_require__(20);
-const { GITHUB_WORKSPACE = '.' } = process.env;
-function run() {
+function run(workspace = '.') {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const { GITHUB_WORKSPACE = workspace } = process.env;
             const base = core.getInput('base');
             const head = core.getInput('head');
             core.info(`Getting diff from ${base} to ${head || 'HEAD'}...`);
@@ -144,6 +164,7 @@ function run() {
         }
     });
 }
+exports.run = run;
 run();
 
 
