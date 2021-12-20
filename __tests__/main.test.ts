@@ -27,5 +27,5 @@ import * as path from 'path'
 
 // need to figure out best way to test, because this relies on npx
 test('fake test for now', () => {
-  expect(true).toBeTruthy()
+    expect(true).toBeTruthy()
 })
